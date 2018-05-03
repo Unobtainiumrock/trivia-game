@@ -35,6 +35,8 @@ $(document).ready(function () {
 
   /**
    * @param  {number} questionAmount
+   * takes in a number and creates that amount of randomly generated
+   * questions objects to be pushed to the questions array
    */
   function createQuestions(questionAmount) {
     
