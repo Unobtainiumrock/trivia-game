@@ -17,17 +17,17 @@ $(document).ready(function () {
 // =============================================================================
 
 // Track the coordinates of the mouse when hovering a question
-// Couldn't get CSS animation to fully work. var() portion won't link with
-// the setProperty values
-  $('.answer-hover').mousemove((e) => {
+// Couldn't get CSS animation to fully work. var() portion in the style.css won't link with
+// the setProperty values here. Sti
+  // $('.answer-hover').mousemove((e) => {
 
-    const x = e.pageX - e.target.offsetLeft;
-    const y = e.pageY - e.target.offsetTop;
-    e.target.style.setProperty('--x', `${ x }px`);
-    e.target.style.setProperty('--y', `${ y }px`);
-    // console.log(x,y);
-    // console.log(e.target.style.cssText);
-  })
+  //   const x = e.pageX - e.target.offsetLeft;
+  //   const y = e.pageY - e.target.offsetTop;
+  //   e.target.style.setProperty('--x', `${ x }px`);
+  //   e.target.style.setProperty('--y', `${ y }px`);
+  //   // console.log(x,y);
+  //   // console.log(e.target.style.cssText);
+  // })
 
   // Evaluate the user's choice on click
   $('.answer-hover').on('click',(e) => {
