@@ -3,10 +3,11 @@ $(document).ready(function () {
 
 
   let questions = [];
+  let currentRound = 0;
   let numberCorrect = 0;
   let numberIncorrect = 0;
   let numberUnanswered = 0;
-
+  
 // Track the coordinates of the mouse when hovering a question
 // Couldn't get CSS animation to fully work. var() portion won't link with
 // the setProperty values
@@ -28,18 +29,13 @@ $(document).ready(function () {
 
   /**
    * Starts the game by generating random questions, starting the timer,
-   * ...
+   * populating the DOM with the questions and answers
    */
   function startGame() {
     createQuestions(5);
-    console.log(questions);
-    let firstAnswer = $('.answer')[0];
+    console.log(questions);    
 
-    // console.log($(element).attr('q'));
-    $(firstAnswer).text(questions[0].answers[0]);
-    $(firstAnswer).text(questions[0].answers[1]);
-    $(firstAnswer).text(questions[0].answers[2]);
-    $(firstAnswer).text(questions[0].answers[3]);
+    populateAnswerChoices(currentRound);
   }
 
   /**
@@ -100,5 +96,31 @@ $(document).ready(function () {
     return arr;
   }
 
+      // element     round   question
+    // 0             0         0
+    // 1             0         1
+    // 2             0         2
+    // 3             0         3
+    /**
+     * This function iterates the answer class and populates each of their fields with
+     * the corresponding data from the answers array for the current round
+     * 
+     * @param  {number} currentRound is the current question round
+     */
+    function populateAnswerChoices(currentRound) {
+
+      // Iterate 4 times because there are 4 answers to choose from
+      for(let i = 0; i < 4; i++) {
+        // This is where we change which element with a class of 'answer' is targeted by using 'i'
+        let ans = $('.answer')[i];
+        // This is where we change which question from the questions array (for the current round)
+        // we are targeting to the corresponding 
+        $(ans).text(questions[currentRound].answers[i]);
+      }
+    }
+
+    function populateQuestion(currentRound) {
+      
+    }
 
 })
