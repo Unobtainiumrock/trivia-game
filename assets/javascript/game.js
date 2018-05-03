@@ -84,7 +84,7 @@ $(document).ready(function () {
 
 
   /**
-   * Shuffles array in place. ES6 version
+   * Shuffles array in place.
    * @param {Array} arr items An array containing the items.
    * @returns 
    */
@@ -96,7 +96,7 @@ $(document).ready(function () {
     return arr;
   }
 
-      // element     round   question
+    // element     round   question
     // 0             0         0
     // 1             0         1
     // 2             0         2
@@ -104,6 +104,10 @@ $(document).ready(function () {
     /**
      * This function iterates the answer class and populates each of their fields with
      * the corresponding data from the answers array for the current round
+     *     element     round   question
+     *       0           0         0
+     *       2           0         2
+     *       3           0         3
      * 
      * @param  {number} currentRound is the current question round
      */
@@ -120,7 +124,7 @@ $(document).ready(function () {
     }
 
     function populateQuestion(currentRound) {
-      
+
     }
 
 })
