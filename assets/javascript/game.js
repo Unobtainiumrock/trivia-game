@@ -8,7 +8,15 @@ $(document).ready(function () {
   let numberCorrect = 0;
   let numberIncorrect = 0;
   let numberUnanswered = 0;
-  
+
+  // Star my game
+  startGame();
+
+
+
+// EVENT HANDLERS EVENT HANDLERS EVENT HANDLERS EVENT HANDLERS EVENT HANDLERS
+// =============================================================================
+
 // Track the coordinates of the mouse when hovering a question
 // Couldn't get CSS animation to fully work. var() portion won't link with
 // the setProperty values
@@ -22,11 +30,19 @@ $(document).ready(function () {
     // console.log(e.target.style.cssText);
   })
 
+  $('.answer-hover').on('click',(e) => {
+    let answerValue = eval(e.currentTarget.children[0].innerHTML);
+    let questionValue = eval($('#question').text())
 
+    if(answerValue === questionValue) {
+      let result = 'Winner!';
+      nextRound(result);
+    } else {
+      let result = 'Loser!';
+      nextRound(result);
+    } 
+  })
 
-  startGame();
-
-  console.log(questions[0].question,'******');
 
 
   // FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS
@@ -44,10 +60,35 @@ $(document).ready(function () {
     populateQuestion(currentRound);
   }
 
-  function nextRound() {
+  function nextRound(result) {
+    alert(result);
+
+    if(result === 'unanswered') {
+      numberUnanswered++;
+    }
+
+    if(result === 'Winner!') {
+      numberCorrect++;
+    }
+
+    if(result === 'Loser!') {
+      numberIncorrect++;
+    }
+
     currentRound++;
+
+    if(currentRound < 5) {
     populateAnswerChoices(currentRound);
     populateQuestion(currentRound);
+    console.log(`Round: ${currentRound}`)
+    console.log(`Wins: ${numberCorrect}`)
+    console.log(`Losses: ${numberIncorrect}`)
+    console.log(`Unanswered: ${numberUnanswered}`)
+    } else {
+      alert('Game Over!');
+      // Display user results
+    }
+
   }
 
   /**
