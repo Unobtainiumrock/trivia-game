@@ -1,7 +1,6 @@
 
 $(document).ready(function () {
 
-
   // Game data
   let questions = [];
   let currentRound = 0;
@@ -61,19 +60,29 @@ $(document).ready(function () {
    * Evaluates the user choice against the correct answer,
    * displays the correct answer regardless of outcome,
    * calls the nextRound function after displaying the
-   * correct answer
+   * correct answer.
    * @param  {number} answerValue is the value of the answer clicked
    * @param  {number} questionValue is the value of evaluating the question's expression
    */
-  function evaluateAnswer(answerValue,questionValue,event) {
+  window.evaluateAnswer = function(answerValue,questionValue,event) {
+
+    if(answerValue == null) {
+      console.log('running');
+      let result = 'unanswered';
+      $('#question').text(`Times up! The answer was: ${questionValue}`);
+      toggleAnswer();
+      setTimeout(nextRound.bind(null,result),2200);
+    }
 
     if(answerValue === questionValue) {
-      let result = 'Winner!';
+      let result = 'win';
       $('#question').text('Winner winner chicken dinner!');
       toggleAnswer();
-      setTimeout(nextRound.bind(null,result),2000);
-    } else {
-      let result = 'Loser!';
+      setTimeout(nextRound.bind(null,result),2200);
+    }
+
+    if(answerValue !== null && answerValue !== questionValue ) {
+      let result = 'lose';
       $('#question').text(`Nope!! The answer was: ${questionValue}`);
       toggleAnswer();
       setTimeout(nextRound.bind(null,result),2000);
@@ -100,11 +109,11 @@ $(document).ready(function () {
       numberUnanswered++;
     }
 
-    if(result === 'Winner!') {
+    if(result === 'win') {
       numberCorrect++;
     }
 
-    if(result === 'Loser!') {
+    if(result === 'lose') {
       numberIncorrect++;
     }
 
@@ -114,6 +123,8 @@ $(document).ready(function () {
     populateAnswerChoices(currentRound);
     populateQuestion(currentRound);
     toggleAnswer();
+    stopwatch.reset();
+    stopwatch.start();
     console.log(`Round: ${currentRound}`)
     console.log(`Wins: ${numberCorrect}`)
     console.log(`Losses: ${numberIncorrect}`)
