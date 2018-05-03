@@ -25,7 +25,7 @@ $(document).ready(function () {
 
   startGame();
 
-
+  console.log(questions[0].question,'******');
 
   /**
    * Starts the game by generating random questions, starting the timer,
@@ -36,6 +36,7 @@ $(document).ready(function () {
     console.log(questions);    
 
     populateAnswerChoices(currentRound);
+    populateQuestion(currentRound);
   }
 
   /**
@@ -95,12 +96,7 @@ $(document).ready(function () {
     }
     return arr;
   }
-
-    // element     round   question
-    // 0             0         0
-    // 1             0         1
-    // 2             0         2
-    // 3             0         3
+    
     /**
      * This function iterates the answer class and populates each of their fields with
      * the corresponding data from the answers array for the current round
@@ -124,7 +120,7 @@ $(document).ready(function () {
     }
 
     function populateQuestion(currentRound) {
-
+      $('#question').text(questions[currentRound].question);
     }
 
 })
