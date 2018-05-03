@@ -12,27 +12,31 @@
 </head>
 
 <header>
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      
+  <!-- Fixed navbar -->
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 
-      <!-- <div class="collapse navbar-collapse" id="navbarCollapse"> -->
-        <div class="col-centered">
-          <h1>Math Trivia! </h1>
-        </div>
-      <!-- </div> -->
-    </nav>
-  </header>
+
+    <!-- <div class="collapse navbar-collapse" id="navbarCollapse"> -->
+    <div class="col-centered">
+      <h1>Math Trivia! </h1>
+    </div>
+    <!-- </div> -->
+  </nav>
+</header>
 
 
 <body>
+  <audio autoplay loop id="music">
+      <source src="./assets/sounds/soundtrack.mp3" type="audio/mp3">
+  </audio>
   <div class="container">
     <div class="row">
       <div class="col-md-12 text-center">
-        <p id="game-over" class="question-hover">Time Remaining: <span id="timer">00:30</span> seconds</p>
+        <p id="game-over" class="question-hover">Time Remaining:
+          <span id="timer">00:30</span> seconds</p>
       </div>
     </div>
-<!-- Game -->
+    <!-- Game -->
     <div class="row">
       <div class="col-md-6 col-centered text-center">
 
@@ -40,10 +44,18 @@
           <span id="title">Question: </span>
           <span id="question"></span>
         </p>
-        <button class="answer-hover"><span class="answer"></span></button>
-        <button class="answer-hover"><span class="answer"></span></button>
-        <button class="answer-hover"><span class="answer"></span></button>
-        <button class="answer-hover"><span class="answer"></span></button>
+        <button class="answer-hover">
+          <span class="answer"></span>
+        </button>
+        <button class="answer-hover">
+          <span class="answer"></span>
+        </button>
+        <button class="answer-hover">
+          <span class="answer"></span>
+        </button>
+        <button class="answer-hover">
+          <span class="answer"></span>
+        </button>
       </div>
     </div>
     <!-- Hidden Answer-->
@@ -59,7 +71,7 @@
     <nav class="navbar navbar-expand-md navbar-dark fixed-bottom bg-dark">
       <div class="col-centered">
         <p style="color: white">Unobtainiumrock Industries ®</p>
-      <div>
+        <div>
     </nav>
   </footer>
 
