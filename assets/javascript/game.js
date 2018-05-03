@@ -17,12 +17,14 @@ $(document).ready(function () {
     e.target.style.setProperty('--x', `${ x }px`);
     e.target.style.setProperty('--y', `${ y }px`);
     // console.log(x,y);
-    console.log(e.target.style.cssText);
+    // console.log(e.target.style.cssText);
   })
 
 
 
   startGame();
+
+
 
   /**
    * Starts the game by generating random questions, starting the timer,
@@ -31,6 +33,13 @@ $(document).ready(function () {
   function startGame() {
     createQuestions(5);
     console.log(questions);
+    let firstAnswer = $('.answer')[0];
+
+    // console.log($(element).attr('q'));
+    $(firstAnswer).text(questions[0].answers[0]);
+    $(firstAnswer).text(questions[0].answers[1]);
+    $(firstAnswer).text(questions[0].answers[2]);
+    $(firstAnswer).text(questions[0].answers[3]);
   }
 
   /**
@@ -47,7 +56,7 @@ $(document).ready(function () {
       qA.question = `${randomizer(1,30)} + ${randomizer(1,30)}`;
       // Create answers array
       qA.answers = [];
-      // Add at least one correct answer
+      // Add at least one correct answer, in this case, we eval the randomly generated question
       qA.answers.push(eval(qA.question));
       
       // Add 3 dummy answers
