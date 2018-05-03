@@ -46,6 +46,7 @@ img {
   outline: none;
   overflow: hidden;
   border-radius: 100px;
+  margin: 2px;
 }
 .answer-hover span {
   position: relative;
