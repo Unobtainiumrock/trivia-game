@@ -1,9 +1,11 @@
 
 $(document).ready(function () {
 
+
   let questions = [];
-
-
+  let numberCorrect = 0;
+  let numberIncorrect = 0;
+  let numberUnanswered = 0;
 
 // Track the coordinates of the mouse when hovering a question
 // Couldn't get CSS animation to fully work. var() portion won't link with
@@ -19,10 +21,17 @@ $(document).ready(function () {
   })
 
 
-  createQuestions(5);
-  console.log(questions);
 
+  startGame();
 
+  /**
+   * Starts the game by generating random questions, starting the timer,
+   * ...
+   */
+  function startGame() {
+    createQuestions(5);
+    console.log(questions);
+  }
 
   /**
    * @param  {number} questionAmount
@@ -35,22 +44,22 @@ $(document).ready(function () {
       // Create random math question
       qA.question = `${randomizer(1,30)} + ${randomizer(1,30)}`;
       // Create answers array
-      qA.answer = [];
+      qA.answers = [];
       // Add at least one correct answer
-      qA.answer.push(eval(qA.question));
+      qA.answers.push(eval(qA.question));
       
       // Add 3 dummy answers
       for(let i = 0; i < 3; i++) {
         let wrongAnswer = randomizer(1,30);
         // Makes sure we don't have correct answer duplicates
-        if(wrongAnswer === qA.answer[0]) {
+        if(wrongAnswer === qA.answers[0]) {
           wrongAnswer = randomizer(35,50);
         }
-        qA.answer.push(wrongAnswer);
+        qA.answers.push(wrongAnswer);
       }
       // shuffle the answers array, so that the first choice isn't always the correct answer
-
-      // Push randomly generate question object to questions array
+        qA.answers = shuffle(qA.answers);
+      // Push randomly generated question object to questions array
       questions.push(qA);
     }
     
