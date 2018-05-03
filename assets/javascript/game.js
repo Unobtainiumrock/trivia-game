@@ -9,7 +9,7 @@ $(document).ready(function () {
   let numberIncorrect = 0;
   let numberUnanswered = 0;
 
-  // Star my game
+  // Start my game
   startGame();
 
 
@@ -30,17 +30,13 @@ $(document).ready(function () {
     // console.log(e.target.style.cssText);
   })
 
+  // Evaluate the user's choice on click
   $('.answer-hover').on('click',(e) => {
     let answerValue = eval(e.currentTarget.children[0].innerHTML);
-    let questionValue = eval($('#question').text())
+    let questionValue = eval($('#question').text());
 
-    if(answerValue === questionValue) {
-      let result = 'Winner!';
-      nextRound(result);
-    } else {
-      let result = 'Loser!';
-      nextRound(result);
-    } 
+    evaluateAnswer(answerValue,questionValue,e);
+
   })
 
 
@@ -59,10 +55,45 @@ $(document).ready(function () {
     populateAnswerChoices(currentRound);
     populateQuestion(currentRound);
   }
+  
+  /**
+   * Evaluates the user choice against the correct answer,
+   * displays the correct answer regardless of outcome,
+   * calls the nextRound function after displaying the
+   * correct answer
+   * @param  {number} answerValue is the value of the answer clicked
+   * @param  {number} questionValue is the value of evaluating the question's expression
+   */
+  function evaluateAnswer(answerValue,questionValue,event) {
+
+    if(answerValue === questionValue) {
+      let result = 'Winner!';
+      $('#question').text('Winner winner chicken dinner!');
+      toggleAnswer();
+      setTimeout(nextRound.bind(null,result),2500);
+    } else {
+      let result = 'Loser!';
+      $('#question').text(`Nope!! The answer was: ${questionValue}`);
+      toggleAnswer();
+      setTimeout(nextRound.bind(null,result),2500);
+    } 
+  }
+
+  /**
+   * Toggles between the questions display and revealing the hidden answer
+   */
+  function toggleAnswer() {
+    $('.answer-hover').toggle();
+
+    if($('#hidden-answer').css('display') !== 'inline') {
+      $('#hidden-answer').css('display','inline');
+    } else {
+      $('#hidden-answer').css('display','none'); 
+    }
+  }
 
   function nextRound(result) {
-    alert(result);
-
+    console.log(result);
     if(result === 'unanswered') {
       numberUnanswered++;
     }
@@ -80,13 +111,15 @@ $(document).ready(function () {
     if(currentRound < 5) {
     populateAnswerChoices(currentRound);
     populateQuestion(currentRound);
+    toggleAnswer();
     console.log(`Round: ${currentRound}`)
     console.log(`Wins: ${numberCorrect}`)
     console.log(`Losses: ${numberIncorrect}`)
     console.log(`Unanswered: ${numberUnanswered}`)
     } else {
-      alert('Game Over!');
+      // alert('Game Over!');
       // Display user results
+      $('#game-over').text(`Correct: ${numberCorrect} Incorrect: ${numberIncorrect} Unanswered: ${numberUnanswered}`);
     }
 
   }
@@ -94,7 +127,7 @@ $(document).ready(function () {
   /**
    * @param  {number} questionAmount
    * takes in a number and creates that amount of randomly generated
-   * questions objects to be pushed to the questions array
+   * questions objects, and pushes them to the questions array
    */
   function createQuestions(questionAmount) {
     var operands = ['+','-','*','/'];
@@ -153,7 +186,7 @@ $(document).ready(function () {
   }
     
     /**
-     * This function iterates the answer class and populates each of their fields with
+     * This function iterates the 'answer' class and populates each of their fields with
      * the corresponding data from the answers array for the current round
      *     element     round   question
      *       0           0         0
@@ -173,7 +206,11 @@ $(document).ready(function () {
         $(ans).text(questions[currentRound].answers[i]);
       }
     }
-
+    /**
+     * Uses the current round to determine which question from our questions array will
+     * populate the corresponding location in the DOM
+     * @param  {number} currentRound is the current round
+     */
     function populateQuestion(currentRound) {
       $('#question').text(questions[currentRound].question);
     }
