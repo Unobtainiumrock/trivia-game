@@ -1,0 +1,58 @@
+
+h1 {
+  position: relative;
+  background: blue;
+  padding: 1em 2em;
+  border: none;
+  color: white;
+  font-size: 1.2em;
+  cursor: pointer;
+  outline: none;
+  overflow: hidden;
+  border-radius: 100px;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: white;
+}
+
+/* .answer {
+  background-color: blue;
+  color: white; 
+} */
+
+.answer-hover {
+  position: relative;
+  background: #f72359;
+  padding: 1em 2em;
+  border: none;
+  color: white;
+  font-size: 1.2em;
+  cursor: pointer;
+  outline: none;
+  overflow: hidden;
+  border-radius: 100px;
+}
+.answer-hover span {
+  position: relative;
+  pointer-events: none;
+}
+.answer-hover::before {
+  --size: 0;
+  content: "";
+  position: absolute;
+  left: var(0);
+  top: var(0);
+  width: var(--size);
+  height: var(--size);
+  background: radial-gradient(circle closest-side, #4405f7, transparent);
+  transform: translate(-50%, -50%);
+  transition: width 0.2s ease, height 0.2s ease;
+}
+.answer-hover:hover::before {
+  --size: 400px;
+}
