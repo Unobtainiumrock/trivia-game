@@ -2,6 +2,7 @@
 $(document).ready(function () {
 
 
+  // Game data
   let questions = [];
   let currentRound = 0;
   let numberCorrect = 0;
@@ -27,6 +28,10 @@ $(document).ready(function () {
 
   console.log(questions[0].question,'******');
 
+
+  // FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS
+  // =================================================================================
+
   /**
    * Starts the game by generating random questions, starting the timer,
    * populating the DOM with the questions and answers
@@ -39,18 +44,25 @@ $(document).ready(function () {
     populateQuestion(currentRound);
   }
 
+  function nextRound() {
+    currentRound++;
+    populateAnswerChoices(currentRound);
+    populateQuestion(currentRound);
+  }
+
   /**
    * @param  {number} questionAmount
    * takes in a number and creates that amount of randomly generated
    * questions objects to be pushed to the questions array
    */
   function createQuestions(questionAmount) {
+    var operands = ['+','-','*','/'];
     
     for(let i = 0; i < questionAmount; i++) {
       // Create question Object
       let qA = {};
       // Create random math question
-      qA.question = `${randomizer(1,30)} + ${randomizer(1,30)}`;
+      qA.question = `${randomizer(1,30)} ${operands[randomizer(1,3)]} ${randomizer(1,30)}`;
       // Create answers array
       qA.answers = [];
       // Add at least one correct answer, in this case, we eval the randomly generated question
@@ -58,7 +70,7 @@ $(document).ready(function () {
       
       // Add 3 dummy answers
       for(let i = 0; i < 3; i++) {
-        let wrongAnswer = randomizer(1,30);
+        let wrongAnswer = randomizer(1,900);
         // Makes sure we don't have correct answer duplicates
         if(wrongAnswer === qA.answers[0]) {
           wrongAnswer = randomizer(35,50);
@@ -85,7 +97,9 @@ $(document).ready(function () {
 
 
   /**
-   * Shuffles array in place.
+   * Shuffles array in place. This is used to shuffle our answers array,
+   * in order to prevent the first choice from always being the 
+   * the correct option
    * @param {Array} arr items An array containing the items.
    * @returns 
    */
