@@ -54,6 +54,7 @@ $(document).ready(function () {
 
     populateAnswerChoices(currentRound);
     populateQuestion(currentRound);
+    stopwatch.start();
   }
   
   /**
@@ -70,12 +71,12 @@ $(document).ready(function () {
       let result = 'Winner!';
       $('#question').text('Winner winner chicken dinner!');
       toggleAnswer();
-      setTimeout(nextRound.bind(null,result),2500);
+      setTimeout(nextRound.bind(null,result),2000);
     } else {
       let result = 'Loser!';
       $('#question').text(`Nope!! The answer was: ${questionValue}`);
       toggleAnswer();
-      setTimeout(nextRound.bind(null,result),2500);
+      setTimeout(nextRound.bind(null,result),2000);
     } 
   }
 
@@ -84,6 +85,7 @@ $(document).ready(function () {
    */
   function toggleAnswer() {
     $('.answer-hover').toggle();
+    $('#title').toggle();
 
     if($('#hidden-answer').css('display') !== 'inline') {
       $('#hidden-answer').css('display','inline');
