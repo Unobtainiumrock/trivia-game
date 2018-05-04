@@ -8,11 +8,11 @@
   //  Our stopwatch object.
   let stopwatch = {
 
-    time: 30,
+    time: 20,
     
     reset: function() {
 
-      stopwatch.time = 30;
+      stopwatch.time = 20;
 
       $('#timer').html('00:30');
     },

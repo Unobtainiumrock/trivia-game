@@ -3,9 +3,8 @@
 This is a math trivia game. Five questions with four answer choices are randomly generated on each round. There is a 20 second time limit to answer each question before the answer is revealed. At the end of the game, your score of correct, incorrect, and unanswered questions will be displayed. You will then be given the option to try again if you'd like.
 
 ## Getting Started
-Click the image or link to go to the game.
 
-Hosted on [GitHub pages](https://unobtainiumrock.github.io/unit-4-game-without-hw-materials-/).
+Hosted on [GitHub pages](https://unobtainiumrock.github.io/trivia-game/).
 ![Epic Math Trivia](./assets/images/math-trivia.png "Epic Math Trivia")
 
 ## Built With
