@@ -9,6 +9,7 @@ $(document).ready(function () {
   let numberUnanswered = 0;
 
   // Start my game
+  // Hides score until end of round
   startGame();
 
 
@@ -38,6 +39,10 @@ $(document).ready(function () {
 
   })
 
+  // Resets the game
+  $('#reset-button').click(() => {
+    resetGame();
+  })
 
 
   // FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS
@@ -49,11 +54,40 @@ $(document).ready(function () {
    */
   function startGame() {
     createQuestions(5);
-    console.log(questions);    
+    console.log(questions); 
+    
+    $('#game-over').toggle();
 
     populateAnswerChoices(currentRound);
     populateQuestion(currentRound);
     stopwatch.start();
+  }
+  /**
+   */
+  function endGame() {
+    // When game ends, hide game and display user results
+    $('#countdown-info').toggle();
+    $('#hidden-answer').css('display','none');
+    // $('#game').css('display','none');
+    $('#game').toggle();
+    $('#reset-button').css('display','block');
+    $('#game-over').toggle();
+    $('#game-over').text(`Correct: ${numberCorrect} Incorrect: ${numberIncorrect} Unanswered: ${numberUnanswered}`);
+    stopwatch.stop();
+  }
+
+  function resetGame() {
+    $('#countdown-info').toggle();
+    $('#game').css('display','block');
+    $('#reset-button').css('display','none');
+    $('#game-over').text('');
+    toggleAnswer();
+    stopwatch.reset();
+    currentRound = 0;
+    numberCorrect = 0;
+    numberIncorrect = 0;
+    numberUnanswered = 0;
+    startGame();
   }
   
   /**
@@ -66,25 +100,26 @@ $(document).ready(function () {
    */
   window.evaluateAnswer = function(answerValue,questionValue,event) {
 
+    $('#countdown-info').toggle();
+    toggleAnswer();
+    toggleHidden();
+
     if(answerValue == null) {
       console.log('running');
       let result = 'unanswered';
       $('#question').text(`Times up! The answer was: ${questionValue}`);
-      toggleAnswer();
       setTimeout(nextRound.bind(null,result),2200);
     }
 
     if(answerValue === questionValue) {
       let result = 'win';
       $('#question').text('Winner winner chicken dinner!');
-      toggleAnswer();
       setTimeout(nextRound.bind(null,result),2200);
     }
 
     if(answerValue !== null && answerValue !== questionValue ) {
       let result = 'lose';
       $('#question').text(`Nope!! The answer was: ${questionValue}`);
-      toggleAnswer();
       setTimeout(nextRound.bind(null,result),2000);
     } 
   }
@@ -95,7 +130,12 @@ $(document).ready(function () {
   function toggleAnswer() {
     $('.answer-hover').toggle();
     $('#title').toggle();
-
+  }
+  /**
+   * Toggles the hidden result image. For some reason toggle wasn't working on this one.
+   * Might fix later
+   */
+  function toggleHidden() {
     if($('#hidden-answer').css('display') !== 'inline') {
       $('#hidden-answer').css('display','inline');
     } else {
@@ -105,6 +145,7 @@ $(document).ready(function () {
 
   function nextRound(result) {
     console.log(result);
+    $('#countdown-info').toggle();
     if(result === 'unanswered') {
       numberUnanswered++;
     }
@@ -123,6 +164,7 @@ $(document).ready(function () {
     populateAnswerChoices(currentRound);
     populateQuestion(currentRound);
     toggleAnswer();
+    toggleHidden();
     stopwatch.reset();
     stopwatch.start();
     console.log(`Round: ${currentRound}`)
@@ -130,9 +172,7 @@ $(document).ready(function () {
     console.log(`Losses: ${numberIncorrect}`)
     console.log(`Unanswered: ${numberUnanswered}`)
     } else {
-      // alert('Game Over!');
-      // Display user results
-      $('#game-over').text(`Correct: ${numberCorrect} Incorrect: ${numberIncorrect} Unanswered: ${numberUnanswered}`);
+      endGame();
     }
 
   }
@@ -166,7 +206,7 @@ $(document).ready(function () {
       }
       // shuffle the answers array, so that the first choice isn't always the correct answer
         qA.answers = shuffle(qA.answers);
-      // Push randomly generated question object to questions array
+      // Push randomly generated question object { Q: question, A: [ans,ans,ans,ans] } to questions array
       questions.push(qA);
     }
     
