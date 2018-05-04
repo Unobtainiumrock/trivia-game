@@ -1,36 +1,33 @@
+'use strict';
 
 $(document).ready(function () {
 
   // Game data
-  let questions = [];
-  let currentRound = 0;
-  let numberCorrect = 0;
-  let numberIncorrect = 0;
-  let numberUnanswered = 0;
-  let rounds = 5;
+  var questions = [];
+  var currentRound = 0;
+  var numberCorrect = 0;
+  var numberIncorrect = 0;
+  var numberUnanswered = 0;
+  var rounds = 5;
 
   // Start my game
   startGame();
 
-
-
-// EVENT HANDLERS EVENT HANDLERS EVENT HANDLERS EVENT HANDLERS EVENT HANDLERS
-// =============================================================================
+  // EVENT HANDLERS EVENT HANDLERS EVENT HANDLERS EVENT HANDLERS EVENT HANDLERS
+  // =============================================================================
 
   // Evaluate the user's choice on click
-  $('.answer-hover').on('click',(e) => {
-    let answerValue = eval(e.currentTarget.children[0].innerHTML);
-    let questionValue = eval($('#question').text());
+  $('.answer-hover').on('click', function (e) {
+    var answerValue = eval(e.currentTarget.children[0].innerHTML);
+    var questionValue = eval($('#question').text());
 
-    evaluateAnswer(answerValue,questionValue,e);
-
-  })
+    evaluateAnswer(answerValue, questionValue, e);
+  });
 
   // Resets the game
-  $('#reset-button').click(() => {
+  $('#reset-button').click(function () {
     resetGame();
-  })
-
+  });
 
   // FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS
   // =================================================================================
@@ -41,7 +38,7 @@ $(document).ready(function () {
    */
   function startGame() {
     createQuestions(rounds);
-    
+
     $('#game-over').toggle();
 
     populateAnswerChoices(currentRound);
@@ -53,11 +50,11 @@ $(document).ready(function () {
    */
   function endGame() {
     $('#countdown-info').toggle();
-    $('#hidden-answer').css('display','none');
+    $('#hidden-answer').css('display', 'none');
     $('#game').toggle();
-    $('#reset-button').css('display','block');
+    $('#reset-button').css('display', 'block');
     $('#game-over').toggle();
-    $('#game-over').text(`Correct: ${numberCorrect} Incorrect: ${numberIncorrect} Unanswered: ${numberUnanswered}`);
+    $('#game-over').text('Correct: ' + numberCorrect + ' Incorrect: ' + numberIncorrect + ' Unanswered: ' + numberUnanswered);
     stopwatch.stop();
   }
   /**
@@ -65,8 +62,8 @@ $(document).ready(function () {
    */
   function resetGame() {
     $('#countdown-info').toggle();
-    $('#game').css('display','block');
-    $('#reset-button').css('display','none');
+    $('#game').css('display', 'block');
+    $('#reset-button').css('display', 'none');
     $('#game-over').text('');
     toggleAnswer();
     stopwatch.reset();
@@ -76,7 +73,7 @@ $(document).ready(function () {
     numberUnanswered = 0;
     startGame();
   }
-  
+
   /**
    * Evaluates the user choice against the correct answer,
    * displays the correct answer regardless of outcome,
@@ -86,7 +83,7 @@ $(document).ready(function () {
    * @param  {number} questionValue: is the value of evaluating the question's expression
    * @param  {Object} event: is the event object from clicking on an answer. 
    */
-  window.evaluateAnswer = function(answerValue,questionValue,event) {
+  window.evaluateAnswer = function (answerValue, questionValue, event) {
 
     // Cycle to the elements to diplay after clicking an answer
     $('#countdown-info').toggle();
@@ -95,24 +92,24 @@ $(document).ready(function () {
 
     // the answer will be null if the user doesn't pick an answer. Check
     // the stopwatch.Count method in timer.js
-    if(answerValue == null) {
-      let result = 'unanswered';
-      $('#question').text(`Times up! The answer was: ${questionValue}`);
-      setTimeout(nextRound.bind(null,result),2100);
+    if (answerValue == null) {
+      var result = 'unanswered';
+      $('#question').text('Times up! The answer was: ' + questionValue);
+      setTimeout(nextRound.bind(null, result), 2100);
     }
 
-    if(answerValue === questionValue) {
-      let result = 'win';
+    if (answerValue === questionValue) {
+      var _result = 'win';
       $('#question').text('Winner winner chicken dinner!');
-      setTimeout(nextRound.bind(null,result),2100);
+      setTimeout(nextRound.bind(null, _result), 2100);
     }
 
-    if(answerValue !== null && answerValue !== questionValue ) {
-      let result = 'lose';
-      $('#question').text(`Nope!! The answer was: ${questionValue}`);
-      setTimeout(nextRound.bind(null,result),2100);
-    } 
-  }
+    if (answerValue !== null && answerValue !== questionValue) {
+      var _result2 = 'lose';
+      $('#question').text('Nope!! The answer was: ' + questionValue);
+      setTimeout(nextRound.bind(null, _result2), 2100);
+    }
+  };
 
   /**
    * Toggles between the question and answers displayed.
@@ -126,10 +123,10 @@ $(document).ready(function () {
    * --Might fix later.
    */
   function toggleHidden() {
-    if($('#hidden-answer').css('display') !== 'inline') {
-      $('#hidden-answer').css('display','inline');
+    if ($('#hidden-answer').css('display') !== 'inline') {
+      $('#hidden-answer').css('display', 'inline');
     } else {
-      $('#hidden-answer').css('display','none'); 
+      $('#hidden-answer').css('display', 'none');
     }
   }
   /**
@@ -140,7 +137,7 @@ $(document).ready(function () {
     $('#countdown-info').toggle();
     currentRound++;
 
-    if(currentRound < 5) {
+    if (currentRound < 5) {
       populateAnswerChoices(currentRound);
       populateQuestion(currentRound);
       toggleAnswer();
@@ -150,7 +147,6 @@ $(document).ready(function () {
     } else {
       endGame();
     }
-
   }
   /**
    * @param  {string} result: the string passed to it from next round
@@ -163,17 +159,16 @@ $(document).ready(function () {
    * 
    */
   function incrementScores(result) {
-    if(result === 'unanswered') {
+    if (result === 'unanswered') {
       numberUnanswered++;
     }
-    if(result === 'win') {
+    if (result === 'win') {
       numberCorrect++;
     }
-    if(result === 'lose') {
+    if (result === 'lose') {
       numberIncorrect++;
     }
   }
-
 
   // THIS SECTION HAS THE RANDOMIZER FUNCTIONS FOR SETTING UP GAME DATA
 
@@ -184,41 +179,39 @@ $(document).ready(function () {
    * @param  {number} questionAmount: Is the number of questions --in this case its 5.
    */
   function createQuestions(questionAmount) {
-    var operands = ['+','-','*','/'];
-    
-    for(let i = 0; i < questionAmount; i++) {
+    var operands = ['+', '-', '*', '/'];
+
+    for (var i = 0; i < questionAmount; i++) {
       // Create question Object
-      let qA = {};
+      var qA = {};
       // Create random math question
-      qA.question = `${randomizer(1,30)} ${operands[randomizer(1,3)]} ${randomizer(1,30)}`;
+      qA.question = randomizer(1, 30) + ' ' + operands[randomizer(1, 3)] + ' ' + randomizer(1, 30);
       // Create answers array
       qA.answers = [];
       // Add at least one correct answer, in this case, we eval the randomly generated question
       qA.answers.push(eval(qA.question));
       // Add 3 dummy answers
-      for(let i = 0; i < 3; i++) {
-        let wrongAnswer = randomizer(1,900);
+      for (var _i = 0; _i < 3; _i++) {
+        var wrongAnswer = randomizer(1, 900);
         // Makes sure we don't have correct answer duplicates
-        if(wrongAnswer === qA.answers[0]) {
-          wrongAnswer = randomizer(35,50);
+        if (wrongAnswer === qA.answers[0]) {
+          wrongAnswer = randomizer(35, 50);
         }
         qA.answers.push(wrongAnswer);
       }
       // shuffle the answers array, so that the first choice isn't always the correct answer
-        qA.answers = shuffle(qA.answers);
+      qA.answers = shuffle(qA.answers);
       // Push randomly generated question object { Q: question, A: [ans,ans,ans,ans] } to questions array
       questions.push(qA);
     }
-    
   }
-
 
   /**
    * @param  {number} lowerBound: the lower end of range for random generation
    * @param  {number} upperBound: the upper end of range for random generation
    * @returns {number}  randomly generated number based on the range provided
    */
-  function randomizer(lowerBound,upperBound) {
+  function randomizer(lowerBound, upperBound) {
     return Math.floor(Math.random() * upperBound + lowerBound);
   }
 
@@ -230,42 +223,43 @@ $(document).ready(function () {
    * @returns a shuffled version of arr
    */
   function shuffle(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var _ref = [arr[j], arr[i]];
+      arr[i] = _ref[0];
+      arr[j] = _ref[1];
     }
     return arr;
   }
-    
-    /**
-     * This function iterates the 'answer' class and populates each of their fields with
-     * the corresponding data from the answers array for the current round
-     *     element     round   question
-     *       0           0         0
-     *       2           0         2
-     *       3           0         3
-     * 
-     * @param  {number} currentRound: the current question round
-     */
-    function populateAnswerChoices(currentRound) {
 
-      // Iterate 4 times because there are 4 answers to choose from
-      for(let i = 0; i < 4; i++) {
-        // This is where we change which element with a class of 'answer' is targeted by using 'i'
-        let ans = $('.answer')[i];
-        // This is where we change which question from the questions array (for the current round)
-        // we are targeting to the corresponding 
-        $(ans).text(questions[currentRound].answers[i]);
-      }
+  /**
+   * This function iterates the 'answer' class and populates each of their fields with
+   * the corresponding data from the answers array for the current round
+   *     element     round   question
+   *       0           0         0
+   *       2           0         2
+   *       3           0         3
+   * 
+   * @param  {number} currentRound: the current question round
+   */
+  function populateAnswerChoices(currentRound) {
+
+    // Iterate 4 times because there are 4 answers to choose from
+    for (var i = 0; i < 4; i++) {
+      // This is where we change which element with a class of 'answer' is targeted by using 'i'
+      var ans = $('.answer')[i];
+      // This is where we change which question from the questions array (for the current round)
+      // we are targeting to the corresponding 
+      $(ans).text(questions[currentRound].answers[i]);
     }
+  }
 
-    /**
-     * Uses the current round to determine which question from our questions array will
-     * populate the corresponding location in the DOM
-     * @param  {number} currentRound: the current round
-     */
-    function populateQuestion(currentRound) {
-      $('#question').text(questions[currentRound].question);
-    }
-
-})
+  /**
+   * Uses the current round to determine which question from our questions array will
+   * populate the corresponding location in the DOM
+   * @param  {number} currentRound: the current round
+   */
+  function populateQuestion(currentRound) {
+    $('#question').text(questions[currentRound].question);
+  }
+});
