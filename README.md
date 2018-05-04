@@ -14,6 +14,7 @@ Hosted on [GitHub pages](https://unobtainiumrock.github.io/unit-4-game-without-h
 * [JQuery](http://jquery.com/)
 * [Javascript](https://eloquentjavascript.net/)
 * [CSS](https://css-tricks.com/)
+* [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)
 
 
 ## Authors
