@@ -7,28 +7,15 @@ $(document).ready(function () {
   let numberCorrect = 0;
   let numberIncorrect = 0;
   let numberUnanswered = 0;
+  let rounds = 5;
 
   // Start my game
-  // Hides score until end of round
   startGame();
 
 
 
 // EVENT HANDLERS EVENT HANDLERS EVENT HANDLERS EVENT HANDLERS EVENT HANDLERS
 // =============================================================================
-
-// Track the coordinates of the mouse when hovering a question
-// Couldn't get CSS animation to fully work. var() portion in the style.css won't link with
-// the setProperty values here. Sti
-  // $('.answer-hover').mousemove((e) => {
-
-  //   const x = e.pageX - e.target.offsetLeft;
-  //   const y = e.pageY - e.target.offsetTop;
-  //   e.target.style.setProperty('--x', `${ x }px`);
-  //   e.target.style.setProperty('--y', `${ y }px`);
-  //   // console.log(x,y);
-  //   // console.log(e.target.style.cssText);
-  // })
 
   // Evaluate the user's choice on click
   $('.answer-hover').on('click',(e) => {
@@ -53,8 +40,7 @@ $(document).ready(function () {
    * populating the DOM with the questions and answers
    */
   function startGame() {
-    createQuestions(5);
-    console.log(questions); 
+    createQuestions(rounds);
     
     $('#game-over').toggle();
 
@@ -63,19 +49,20 @@ $(document).ready(function () {
     stopwatch.start();
   }
   /**
+   * When game ends, hide game, diplay replay button, and display user results
    */
   function endGame() {
-    // When game ends, hide game and display user results
     $('#countdown-info').toggle();
     $('#hidden-answer').css('display','none');
-    // $('#game').css('display','none');
     $('#game').toggle();
     $('#reset-button').css('display','block');
     $('#game-over').toggle();
     $('#game-over').text(`Correct: ${numberCorrect} Incorrect: ${numberIncorrect} Unanswered: ${numberUnanswered}`);
     stopwatch.stop();
   }
-
+  /**
+   * Returns entire game to inital state and then calls startGame
+   */
   function resetGame() {
     $('#countdown-info').toggle();
     $('#game').css('display','block');
@@ -95,45 +82,48 @@ $(document).ready(function () {
    * displays the correct answer regardless of outcome,
    * calls the nextRound function after displaying the
    * correct answer.
-   * @param  {number} answerValue is the value of the answer clicked
-   * @param  {number} questionValue is the value of evaluating the question's expression
+   * @param  {number} answerValue: is the value of the answer clicked
+   * @param  {number} questionValue: is the value of evaluating the question's expression
+   * @param  {Object} event: is the event object from clicking on an answer. 
    */
   window.evaluateAnswer = function(answerValue,questionValue,event) {
 
+    // Cycle to the elements to diplay after clicking an answer
     $('#countdown-info').toggle();
     toggleAnswer();
     toggleHidden();
 
+    // the answer will be null if the user doesn't pick an answer. Check
+    // the stopwatch.Count method in timer.js
     if(answerValue == null) {
-      console.log('running');
       let result = 'unanswered';
       $('#question').text(`Times up! The answer was: ${questionValue}`);
-      setTimeout(nextRound.bind(null,result),2200);
+      setTimeout(nextRound.bind(null,result),2100);
     }
 
     if(answerValue === questionValue) {
       let result = 'win';
       $('#question').text('Winner winner chicken dinner!');
-      setTimeout(nextRound.bind(null,result),2200);
+      setTimeout(nextRound.bind(null,result),2100);
     }
 
     if(answerValue !== null && answerValue !== questionValue ) {
       let result = 'lose';
       $('#question').text(`Nope!! The answer was: ${questionValue}`);
-      setTimeout(nextRound.bind(null,result),2000);
+      setTimeout(nextRound.bind(null,result),2100);
     } 
   }
 
   /**
-   * Toggles between the questions display and revealing the hidden answer
+   * Toggles between the question and answers displayed.
    */
   function toggleAnswer() {
     $('.answer-hover').toggle();
     $('#title').toggle();
   }
   /**
-   * Toggles the hidden result image. For some reason toggle wasn't working on this one.
-   * Might fix later
+   * Toggles the hidden result image. For some reason toggle wasn't working on this one
+   * --Might fix later.
    */
   function toggleHidden() {
     if($('#hidden-answer').css('display') !== 'inline') {
@@ -142,45 +132,56 @@ $(document).ready(function () {
       $('#hidden-answer').css('display','none'); 
     }
   }
-
+  /**
+   * @param  {string} result: the string passed to it from evaluateAnswer.
+   */
   function nextRound(result) {
-    console.log(result);
+    incrementScores(result);
     $('#countdown-info').toggle();
-    if(result === 'unanswered') {
-      numberUnanswered++;
-    }
-
-    if(result === 'win') {
-      numberCorrect++;
-    }
-
-    if(result === 'lose') {
-      numberIncorrect++;
-    }
-
     currentRound++;
 
     if(currentRound < 5) {
-    populateAnswerChoices(currentRound);
-    populateQuestion(currentRound);
-    toggleAnswer();
-    toggleHidden();
-    stopwatch.reset();
-    stopwatch.start();
-    console.log(`Round: ${currentRound}`)
-    console.log(`Wins: ${numberCorrect}`)
-    console.log(`Losses: ${numberIncorrect}`)
-    console.log(`Unanswered: ${numberUnanswered}`)
+      populateAnswerChoices(currentRound);
+      populateQuestion(currentRound);
+      toggleAnswer();
+      toggleHidden();
+      stopwatch.reset();
+      stopwatch.start();
     } else {
       endGame();
     }
 
   }
+  /**
+   * @param  {string} result: the string passed to it from next round
+   * 
+   * The variable pass-down for result goes the following:
+   * 1)clickEvent || timer run out captures data of answer ->
+   * 2)evaluateAnswer creates string representative of "choice vs answer" as result ->
+   * 3)nextRound takes that result and uses it in a call to incrementScore
+   * 4)incrementScore uses this data passed which was passed from two levels up.
+   * 
+   */
+  function incrementScores(result) {
+    if(result === 'unanswered') {
+      numberUnanswered++;
+    }
+    if(result === 'win') {
+      numberCorrect++;
+    }
+    if(result === 'lose') {
+      numberIncorrect++;
+    }
+  }
+
+
+  // THIS SECTION HAS THE RANDOMIZER FUNCTIONS FOR SETTING UP GAME DATA
 
   /**
-   * @param  {number} questionAmount
-   * takes in a number and creates that amount of randomly generated
+   * Takes in a number and creates that amount of randomly generated
    * questions objects, and pushes them to the questions array
+   * 
+   * @param  {number} questionAmount: Is the number of questions --in this case its 5.
    */
   function createQuestions(questionAmount) {
     var operands = ['+','-','*','/'];
@@ -194,7 +195,6 @@ $(document).ready(function () {
       qA.answers = [];
       // Add at least one correct answer, in this case, we eval the randomly generated question
       qA.answers.push(eval(qA.question));
-      
       // Add 3 dummy answers
       for(let i = 0; i < 3; i++) {
         let wrongAnswer = randomizer(1,900);
@@ -214,21 +214,20 @@ $(document).ready(function () {
 
 
   /**
-   * @param  {number} lowerBound the lower end of range for random generation
-   * @param  {number} upperBound the upper end of range for random generation
-   * @returns {number} A randomy generated number based on the range provided
+   * @param  {number} lowerBound: the lower end of range for random generation
+   * @param  {number} upperBound: the upper end of range for random generation
+   * @returns {number}  randomly generated number based on the range provided
    */
   function randomizer(lowerBound,upperBound) {
     return Math.floor(Math.random() * upperBound + lowerBound);
   }
 
-
   /**
    * Shuffles array in place. This is used to shuffle our answers array,
    * in order to prevent the first choice from always being the 
-   * the correct option
-   * @param {Array} arr items An array containing the items.
-   * @returns 
+   * the correct option.
+   * @param {Array} arr: is an array containing the questions we want to shuffle
+   * @returns a shuffled version of arr
    */
   function shuffle(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
@@ -246,7 +245,7 @@ $(document).ready(function () {
      *       2           0         2
      *       3           0         3
      * 
-     * @param  {number} currentRound is the current question round
+     * @param  {number} currentRound: the current question round
      */
     function populateAnswerChoices(currentRound) {
 
@@ -259,10 +258,11 @@ $(document).ready(function () {
         $(ans).text(questions[currentRound].answers[i]);
       }
     }
+
     /**
      * Uses the current round to determine which question from our questions array will
      * populate the corresponding location in the DOM
-     * @param  {number} currentRound is the current round
+     * @param  {number} currentRound: the current round
      */
     function populateQuestion(currentRound) {
       $('#question').text(questions[currentRound].question);
