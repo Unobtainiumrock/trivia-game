@@ -2,6 +2,8 @@
 
 This is a math trivia game. Five questions with four answer choices are randomly generated on each round. There is a 20 second time limit to answer each question before the answer is revealed. At the end of the game, your score of correct, incorrect, and unanswered questions will be displayed. You will then be given the option to try again if you'd like.
 
+**Note:** It has been hit and miss with .mp3 files working with Chrome for me. This is best played in another browser like Firefox.
+
 ## Getting Started
 
 Hosted on [GitHub pages](https://unobtainiumrock.github.io/trivia-game/).
